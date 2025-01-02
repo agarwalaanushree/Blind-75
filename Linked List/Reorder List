@@ -1,0 +1,54 @@
+Without using extra space:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(head==NULL)
+        return;
+
+        // Split list into two halfes
+        ListNode* slow=head;
+        ListNode* fast=head;
+        while(fast && fast->next)
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+
+        //Reverse second half
+        ListNode* sec=slow->next;
+        slow->next=nullptr;
+        ListNode* node=nullptr;
+        while(sec)
+        {
+            ListNode* temp=sec->next;
+            sec->next=node;
+            node=sec;
+            sec=temp;
+        }
+        // Merge two halves
+        ListNode* first=head;
+        sec=node;
+        while(sec)
+        {
+            ListNode* l1=first->next;
+            ListNode* l2=sec->next;
+            first->next=sec;
+            sec->next=l1;
+            first=l1;
+            sec=l2;
+        }
+
+   
+    }
+};
